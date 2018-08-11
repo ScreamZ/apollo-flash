@@ -1,0 +1,36 @@
+{
+  "name": "apollo-flash",
+  "description": "Toolong and authentication boostraper for Apollo server.",
+  "version": "1.0.0-aplha",
+  "main": "./build",
+  "types": "./build",
+  "scripts": {
+    "build:watch": "tsc --watch",
+    "prepublishOnly": "tsc"
+  },
+  "author": {
+    "name": "Andréas HANSS",
+    "url": "https://www.linkedin.com/in/andreas-hanss/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.0",
+    "graphql-auth": "^0.2.2",
+    "include-all": "^4.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.0",
+    "@types/jsonwebtoken": "^7.2.8",
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^10.5.7",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  },
+  "peerDependencies": {
+    "apollo-server-express": "^2.0",
+    "graphql": "^0.13",
+    "express": "^4.16"
+  }
+}

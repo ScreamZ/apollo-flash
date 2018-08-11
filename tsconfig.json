@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["esnext"],
+    "declaration": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "preserveConstEnums": true,
+    "outDir": "./build"
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules/**"]
+}
