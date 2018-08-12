@@ -1,5 +1,6 @@
 import { IResolvers } from "apollo-server-express";
 import { Request, Response } from "express";
+import withAuth from "graphql-auth";
 import ContextBuilder from "./ContextBuilder";
 import ImportsAutoloader from "./ImportsAutoloader";
 import { ApolloFlashConfig, ApolloFlashContext } from "./typings";
@@ -70,6 +71,7 @@ export default class ApolloFlash<AuthScopeEnum, User> {
         params.req,
         this.config.getUserFromId,
         this.config.getScopeFromUser,
+        this.config.jwtSigningKey,
       ),
       response: params.res,
     };
@@ -78,4 +80,4 @@ export default class ApolloFlash<AuthScopeEnum, User> {
 
 // Export types
 export * from "./typings";
-export { withAuth } from "graphql-auth";
+export { withAuth };

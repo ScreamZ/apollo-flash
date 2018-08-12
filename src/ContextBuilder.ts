@@ -24,12 +24,14 @@ export default class ContextBuilder<AuthScopeEnum, User> {
     req: Request,
     getUserFromId: GetUserFromId<User>,
     getScopeFromUser: GetScopeFromUser<AuthScopeEnum, User>,
+    jwtSigningKey: string | Buffer,
   ): Promise<AuthContext<AuthScopeEnum, User>> {
     const parts = _.get(req.headers, "authorization", "").split(" ");
+    const jwtCookie = _.get(req, "cookies.jwt", undefined);
     let token;
 
     // No token
-    if (parts.length !== 2 && !req.cookies.jwt) {
+    if (parts.length !== 2 && !jwtCookie) {
       return {
         isAuthenticated: false,
         scope: null,
@@ -38,9 +40,9 @@ export default class ContextBuilder<AuthScopeEnum, User> {
     }
 
     // Parse authentication method
-    if (req.cookies.jwt) {
+    if (jwtCookie) {
       // Check cookie auth first
-      token = req.cookies.jwt;
+      token = jwtCookie;
     } else {
       // Otherwise fallback to Authorization header
       const scheme = parts[0];
@@ -52,14 +54,17 @@ export default class ContextBuilder<AuthScopeEnum, User> {
       }
     }
 
-    // Check token
+    // Check token validity
     try {
-      // TODO: Change to RSA key
-      const { sub } = (await verify(token, "TODO")) as any;
+      const { sub } = await verify(token, jwtSigningKey) as any;
+
+      // Retrieve user using user given function
       const user = await getUserFromId(sub);
 
       if (!user) {
-        throw new AuthenticationError("User doesn't exists anymore.");
+        throw new AuthenticationError(
+          "Unable to resolve an user from getUserFromId config. Maybe not found ?",
+        );
       }
 
       return {
@@ -68,7 +73,7 @@ export default class ContextBuilder<AuthScopeEnum, User> {
         user,
       };
     } catch (e) {
-      throw new AuthenticationError("Invalid or expired jwt token");
+      throw new AuthenticationError(e.message);
     }
   }
 }

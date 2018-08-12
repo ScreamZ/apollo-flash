@@ -61,9 +61,9 @@ export default class ImportsAutoloader {
   generateRootResolver(): IResolvers {
     // Parse folder for resolvers
     const flatResolvers = includeAll({
+      depth: 1,
       dirname: this.resolversFolderPath,
       filter: /(.+)\.js$/,
-      flatten: true,
     });
 
     // Extract imports

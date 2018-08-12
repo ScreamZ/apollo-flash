@@ -4,23 +4,25 @@
 <p align="center">
   <i style="font-size: 4em">🚀</i>
 </p>
-<h4 align="center">Tooling and authentication boostraper for Apollo server.</h4>
+<h4 align="center">A smart and efficient toolkit to quickly bootstrap an apollo-server project.</h4>
 
-This tool aim to quickly start an apollo server project with robust tools.
+It comes with the following tools:
 
-It come with shipped things:
-
-- **TypeDefs Schema and Resolvers auto-loader**. Remove complexity of resolvers object management.
+- **TypeDefs Schema and Resolvers auto-loader**. Remove complexity of schema / resolvers objects management.
 - **`http-only cookie` based authentication with JWT**. Strong stateless authentication that allows horizontal scaling and maximum security.
-- **graphql-auth**. Resolver middleware function that enable app security checking.
+- **graphql-auth**. Resolver's middleware function that enable app security checking. Flash also provide context generator accordingly.
 
 # Installation and dependencies
 
-Something that add a cookie property to the req object (`cookie-parser` is fine)
+If you wish to use cookie based auth : you'll need some kind of tool that add a `cookie` property to the request object (`cookie-parser` is fine with express). because apollo-flash will look for a jwt in the cookie object first.
 
-That's why we suggest to use apollo-server-express. Context function needs to have a `.cookie` parameter in order to fetch JWT.
+If you choose to not use cookie implementation, while it is recommanded, apollo-flash will only look for `Authorization: Bearer <token>` header.
 
-JWT is extracted from cookie first, if not found service try to read `Authorization: Bearer <token>` to resolve jwt.
+**In all cases apollo-flash will first try to look for a jwt cookie before looking for the authorizarion header.**
+
+That's why we suggest to use `apollo-server-express` (or koa equivalent).
+
+Then you just need to:
 
 `npm install apollo-flash --save`
 
@@ -37,27 +39,23 @@ import ApolloFlash from "apollo-flash";
 
 // ... Some database instantation
 
+// We need the user model to provide getUserFromId
 const userModel = new UserModel(DB)
 
-const flashConfig = {
-  getScopeFromUser: user => Promise.resolve([]),
-  getUserFromId: userModel.findById,
-  jwtSigningKey: "yoursigningstring", // Or readFileSync
+const Flash = new ApolloFlash({
+  getScopeFromUser: user => Promise.resolve([]), // An array of string.
+  getUserFromId: userModel.findById.bind(this), // Do not forget to bind or wrap in order to maintain scope.
+  jwtSigningKey: "yoursigningstring", // Or file Buffer
   resolversFolderPath: path.resolve(__dirname, "resolvers"),
   typeDefsFolderPath: path.resolve(__dirname, "schemas")
-};
-
-const Flash = new ApolloFlash(flashConfig);
+});
 
 const server = new ApolloServer({
-  context: async (serverContext) => {
-    return {
-      ...await Flash.buildContext(serverContext),
-      CourseModel: new CourseModel(DB),
-      CourseSessionModel: new CourseSessionModel(DB),
-      PlaceModel: new PlaceModel(DB),
-      Usermodel: userModel,
-    },
+  context: async (serverContext) => ({
+    ...await flash.buildContext(serverContext),
+    CourseModel: new CourseModel(DB),
+    Usermodel: userModel,
+  }),
   resolvers: Flash.generateRootResolver(),
   typeDefs: Flash.generateTypeDefs()
 });
@@ -100,7 +98,9 @@ Resolvers are loaded the same way, **except that file naming count**.
 
 Let's start by creating a folder named `resolvers`.
 
-Inside this folder, create a file named `Query.js` and here is an example of content inside this file (You might use an object too, I'm using a class that is auto-instantied while exporting, just a matter of preferences).
+Inside this folder, create a file named `Query.js` and here is an example of content inside this file (You might use an object too, I'm using a class that is auto-instantiated while exporting, this is just a matter of preferences).
+
+**`apollo-flash` only search resolver for one level depth in the given folder, if you are using nested folder for destructuring, please use it as import in your resolvers.**
 
 ```js
 // resolvers/Query.js

@@ -1,4 +1,5 @@
 import { Response } from "express";
+
 /**
  * Fetch an user from a given string ID.
  */
@@ -36,8 +37,13 @@ export interface ApolloFlashConfig<AuthScopeEnum, User> {
    */
   resolversFolderPath: string;
 
-  // TODO: Handle node return type of readFileSync
-  jwtSigningKey: string;
+  /**
+   * String or file that is used for encrypt JWT.
+   *
+   * @type {(string | Buffer)}
+   * @memberof ApolloFlashConfig
+   */
+  jwtSigningKey: string | Buffer;
 
   /**
    * A function that is used to fetch an user in the system using its ID.
