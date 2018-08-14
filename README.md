@@ -2,7 +2,7 @@
   Apollo Flash
 </h1>
 <p align="center">
-  <i style="font-size: 4em">🚀</i>
+    <img src="./docs/logo.png" alt="Logo Apollo Flash" width="300">
 </p>
 <h4 align="center">A smart and efficient toolkit to quickly bootstrap an apollo-server project.</h4>
 
