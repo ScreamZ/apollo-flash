@@ -45,7 +45,7 @@ const userModel = new UserModel(DB)
 const Flash = new ApolloFlash({
   getScopeFromUser: user => Promise.resolve([]), // An array of string.
   getUserFromId: userModel.findById.bind(this), // Do not forget to bind or wrap in order to maintain scope.
-  jwtSigningKey: "yoursigningstring", // Or file Buffer
+  jwtSigningKey: "yoursigningstring", // Or file Buffer with public key.
   resolversFolderPath: path.resolve(__dirname, "resolvers"),
   typeDefsFolderPath: path.resolve(__dirname, "schemas")
 });

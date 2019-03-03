@@ -3,7 +3,7 @@ import { Response } from "express";
 /**
  * Fetch an user from a given string ID.
  */
-export type GetUserFromId<User> = (userID: string) => Promise<User>;
+export type GetUserFromId<User> = (userID: string) => Promise<User | null>;
 
 /**
  * Get the user scope from an user object.

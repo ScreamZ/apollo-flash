@@ -1,3 +1,4 @@
+// @ts-ignore
 import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
 import { verify } from "jsonwebtoken";

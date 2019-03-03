@@ -1,3 +1,4 @@
+// @ts-ignore
 import { IResolvers } from "apollo-server-express";
 import { Request, Response } from "express";
 import withAuth from "graphql-auth";

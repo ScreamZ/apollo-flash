@@ -1,3 +1,4 @@
+// @ts-ignore
 import { gql, IResolvers } from "apollo-server-express";
 import * as includeAll from "include-all";
 import * as _ from "lodash";
