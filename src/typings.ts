@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { VerifyOptions } from "jsonwebtoken";
 
 /**
  * Fetch an user from a given string ID.
@@ -44,6 +45,14 @@ export interface ApolloFlashConfig<AuthScopeEnum, User> {
    * @memberof ApolloFlashConfig
    */
   jwtSigningKey: string | Buffer;
+
+  /**
+   * Options used to verify token
+   *
+   * @type {VerifyOptions}
+   * @memberof ApolloFlashConfig
+   */
+  verifyOpts: VerifyOptions;
 
   /**
    * A function that is used to fetch an user in the system using its ID.

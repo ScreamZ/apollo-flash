@@ -73,6 +73,7 @@ export default class ApolloFlash<AuthScopeEnum, User> {
         this.config.getUserFromId,
         this.config.getScopeFromUser,
         this.config.jwtSigningKey,
+        this.config.verifyOpts,
       ),
       response: params.res,
     };

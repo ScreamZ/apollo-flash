@@ -1,7 +1,7 @@
 {
   "name": "apollo-flash",
   "description": "A smart and efficient toolkit to quickly bootstrap an apollo-server project.",
-  "version": "1.0.0-aplha4",
+  "version": "1.0.0-rc1",
   "license": "MIT",
   "author": {
     "name": "Andréas HANSS",
@@ -18,7 +18,7 @@
     "graphql-auth": "^0.2.3",
     "include-all": "^4.0.0",
     "jsonwebtoken": "^8.3.0",
-    "lodash": "^4.17.0"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",

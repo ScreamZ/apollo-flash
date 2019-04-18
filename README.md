@@ -46,6 +46,7 @@ const Flash = new ApolloFlash({
   getScopeFromUser: user => Promise.resolve([]), // An array of string.
   getUserFromId: userModel.findById.bind(this), // Do not forget to bind or wrap in order to maintain scope.
   jwtSigningKey: "yoursigningstring", // Or file Buffer with public key.
+  verifyOpts: { algorithms: ["RS256"] }, // Passed to jwt verify option.
   resolversFolderPath: path.resolve(__dirname, "resolvers"),
   typeDefsFolderPath: path.resolve(__dirname, "schemas")
 });

@@ -1,7 +1,7 @@
 // @ts-ignore
 import { AuthenticationError } from "apollo-server-express";
 import { Request } from "express";
-import { verify } from "jsonwebtoken";
+import { verify, VerifyOptions } from "jsonwebtoken";
 import * as _ from "lodash";
 import { AuthContext, GetScopeFromUser, GetUserFromId } from "./typings";
 
@@ -26,10 +26,11 @@ export default class ContextBuilder<AuthScopeEnum, User> {
     getUserFromId: GetUserFromId<User>,
     getScopeFromUser: GetScopeFromUser<AuthScopeEnum, User>,
     jwtSigningKey: string | Buffer,
+    verifyOpts: VerifyOptions,
   ): Promise<AuthContext<AuthScopeEnum, User>> {
     const parts = _.get(req.headers, "authorization", "").split(" ");
     const jwtCookie = _.get(req, "cookies.jwt", undefined);
-    let token;
+    let token: string;
 
     // No token
     if (parts.length !== 2 && !jwtCookie) {
@@ -57,7 +58,9 @@ export default class ContextBuilder<AuthScopeEnum, User> {
 
     // Check token validity
     try {
-      const { sub } = await verify(token, jwtSigningKey) as any;
+      const { sub } = (await verify(token, jwtSigningKey, verifyOpts)) as {
+        sub: string;
+      };
 
       // Retrieve user using user given function
       const user = await getUserFromId(sub);
