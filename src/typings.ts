@@ -52,7 +52,7 @@ export interface ApolloFlashConfig<AuthScopeEnum, User> {
    * @type {VerifyOptions}
    * @memberof ApolloFlashConfig
    */
-  verifyOpts: VerifyOptions;
+  verifyOpts: VerifyOptions | null;
 
   /**
    * A function that is used to fetch an user in the system using its ID.

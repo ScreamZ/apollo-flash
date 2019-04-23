@@ -31,7 +31,7 @@ Then you just need to:
 Apollo Flash will automatically load your types definitions and resolvers by parsing your project directories.
 It is also shipped with a authentication middleware that add user in the app context.
 
-[Learn How to use the authication middleware](./docs/authentication.md)
+[Learn How to use the authentication middleware](./docs/authentication.md)
 
 ```js
 import ApolloFlash from "apollo-flash";
@@ -45,8 +45,8 @@ const userModel = new UserModel(DB)
 const Flash = new ApolloFlash({
   getScopeFromUser: user => Promise.resolve([]), // An array of string.
   getUserFromId: userModel.findById.bind(this), // Do not forget to bind or wrap in order to maintain scope.
-  jwtSigningKey: "yoursigningstring", // Or file Buffer with public key.
-  verifyOpts: { algorithms: ["RS256"] }, // Passed to jwt verify option.
+  jwtSigningKey: "yoursigningstring", // Or file Buffer with public key. Use RS256 algorithm with RSA keys and HS256 with string
+  verifyOpts: { algorithms: ["RS256"] }, // Passed to jwt verify function. See types or library `jsonwebtoken`.
   resolversFolderPath: path.resolve(__dirname, "resolvers"),
   typeDefsFolderPath: path.resolve(__dirname, "schemas")
 });
